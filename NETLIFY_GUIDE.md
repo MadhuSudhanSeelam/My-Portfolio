@@ -33,7 +33,7 @@ Because static sites (like Netlify pages) are **"Read-Only"**, the Admin Panel c
     ```bash
     git add .
     git commit -m "Update portfolio content from admin"
-    git push
+    git push origin main
     ```
     - Netlify will detect the change and **automatically update your live site** in seconds!
 
