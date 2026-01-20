@@ -1,6 +1,8 @@
 export const portfolioConfig = {
   "profile": {
     "name": "Madhu Sudhan Seelam",
+    "profileImage": "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?q=80&w=400&auto=format&fit=crop",
+    "resumeUrl": "#",
     "roles": [
       "Full Stack Developer",
       "AI Enthusiast",
@@ -71,7 +73,7 @@ export const portfolioConfig = {
       "title": "Smart Chatbot",
       "desc": "An AI-powered chatbot using natural language processing. Built with React and OpenAI API.",
       "image": "https://images.unsplash.com/photo-1555066931-4365d14bab8c?q=80&w=2070&auto=format&fit=crop",
-      "demo": "#",
+      "demo": "https://btechgpt.netlify.app/",
       "code": "#",
       "tags": [
         "React",

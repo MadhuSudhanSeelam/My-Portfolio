@@ -231,6 +231,106 @@ const Admin = () => {
                                             <label className="admin-label">Full Name</label>
                                             <input className="admin-input" type="text" value={config.profile.name} onChange={(e) => handleUpdate('profile', 'name', e.target.value)} />
                                         </div>
+
+                                        {/* Profile Image Section */}
+                                        <div style={{ background: 'rgba(255,255,255,0.02)', padding: '1.5rem', borderRadius: '12px', border: '1px solid var(--glass-border)' }}>
+                                            <label className="admin-label">Profile Picture</label>
+                                            <div style={{ display: 'grid', gridTemplateColumns: '120px 1fr', gap: '1.5rem', alignItems: 'center' }}>
+                                                <div style={{ width: '120px', height: '120px', borderRadius: '50%', overflow: 'hidden', border: '3px solid var(--accent-blue)', boxShadow: '0 10px 30px rgba(58, 134, 255, 0.3)' }}>
+                                                    <img
+                                                        src={config.profile.profileImage || 'https://via.placeholder.com/120'}
+                                                        alt="Profile Preview"
+                                                        style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+                                                        onError={(e) => { e.target.src = 'https://via.placeholder.com/120?text=No+Image'; }}
+                                                    />
+                                                </div>
+                                                <div>
+                                                    <input
+                                                        className="admin-input"
+                                                        type="text"
+                                                        placeholder="Image URL or Base64"
+                                                        value={config.profile.profileImage || ''}
+                                                        onChange={(e) => handleUpdate('profile', 'profileImage', e.target.value)}
+                                                        style={{ marginBottom: '0.8rem' }}
+                                                    />
+                                                    <div style={{ position: 'relative', overflow: 'hidden', display: 'inline-block' }}>
+                                                        <button className="btn primary-btn" style={{ padding: '0.5rem 1rem', fontSize: '0.9rem' }}>
+                                                            <Plus size={16} style={{ marginRight: '5px' }} /> Upload Image
+                                                        </button>
+                                                        <input
+                                                            type="file"
+                                                            accept="image/*"
+                                                            onChange={(e) => {
+                                                                const file = e.target.files[0];
+                                                                if (file) {
+                                                                    const reader = new FileReader();
+                                                                    reader.onloadend = () => {
+                                                                        handleUpdate('profile', 'profileImage', reader.result);
+                                                                        showNotify("Image uploaded successfully!");
+                                                                    };
+                                                                    reader.readAsDataURL(file);
+                                                                }
+                                                            }}
+                                                            style={{ position: 'absolute', left: 0, top: 0, opacity: 0, width: '100%', height: '100%', cursor: 'pointer' }}
+                                                        />
+                                                    </div>
+                                                    <p style={{ fontSize: '0.75rem', color: 'var(--text-secondary)', marginTop: '0.5rem' }}>
+                                                        Supports JPG, PNG, GIF. (Max 2MB recommended)
+                                                    </p>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        {/* Resume Section */}
+                                        <div style={{ background: 'rgba(255,255,255,0.02)', padding: '1.5rem', borderRadius: '12px', border: '1px solid var(--glass-border)' }}>
+                                            <label className="admin-label">Resume / CV</label>
+                                            <input
+                                                className="admin-input"
+                                                type="text"
+                                                placeholder="Resume URL or Upload PDF"
+                                                value={config.profile.resumeUrl || ''}
+                                                onChange={(e) => handleUpdate('profile', 'resumeUrl', e.target.value)}
+                                                style={{ marginBottom: '0.8rem' }}
+                                            />
+                                            <div style={{ display: 'flex', gap: '1rem', alignItems: 'center', flexWrap: 'wrap' }}>
+                                                <div style={{ position: 'relative', overflow: 'hidden', display: 'inline-block' }}>
+                                                    <button className="btn secondary-btn" style={{ padding: '0.5rem 1rem', fontSize: '0.9rem' }}>
+                                                        <Briefcase size={16} style={{ marginRight: '5px' }} /> Upload PDF
+                                                    </button>
+                                                    <input
+                                                        type="file"
+                                                        accept=".pdf"
+                                                        onChange={(e) => {
+                                                            const file = e.target.files[0];
+                                                            if (file) {
+                                                                if (file.size > 5000000) { // 5MB limit check
+                                                                    alert("File is too large! Please use a file smaller than 5MB.");
+                                                                    return;
+                                                                }
+                                                                const reader = new FileReader();
+                                                                reader.onloadend = () => {
+                                                                    handleUpdate('profile', 'resumeUrl', reader.result);
+                                                                    showNotify("Resume uploaded successfully!");
+                                                                };
+                                                                reader.readAsDataURL(file);
+                                                            }
+                                                        }}
+                                                        style={{ position: 'absolute', left: 0, top: 0, opacity: 0, width: '100%', height: '100%', cursor: 'pointer' }}
+                                                    />
+                                                </div>
+                                                {config.profile.resumeUrl && config.profile.resumeUrl !== '#' && (
+                                                    <a
+                                                        href={config.profile.resumeUrl}
+                                                        target="_blank"
+                                                        rel="noopener noreferrer"
+                                                        style={{ display: 'inline-flex', alignItems: 'center', gap: '0.5rem', color: 'var(--accent-blue)', fontSize: '0.85rem', textDecoration: 'none' }}
+                                                    >
+                                                        <ExternalLink size={14} /> Preview Resume
+                                                    </a>
+                                                )}
+                                            </div>
+                                        </div>
+
                                         <div>
                                             <label className="admin-label">Tagline</label>
                                             <textarea className="admin-input" rows="3" value={config.profile.tagline} onChange={(e) => handleUpdate('profile', 'tagline', e.target.value)} />
@@ -255,6 +355,14 @@ const Admin = () => {
                                             <div>
                                                 <label className="admin-label">WhatsApp Number</label>
                                                 <input className="admin-input" type="text" value={config.profile.whatsapp} onChange={(e) => handleUpdate('profile', 'whatsapp', e.target.value)} />
+                                            </div>
+                                            <div>
+                                                <label className="admin-label">GitHub URL</label>
+                                                <input className="admin-input" type="text" value={config.profile.github} onChange={(e) => handleUpdate('profile', 'github', e.target.value)} />
+                                            </div>
+                                            <div>
+                                                <label className="admin-label">LinkedIn URL</label>
+                                                <input className="admin-input" type="text" value={config.profile.linkedin} onChange={(e) => handleUpdate('profile', 'linkedin', e.target.value)} />
                                             </div>
                                         </div>
                                     </div>
@@ -355,7 +463,7 @@ const Admin = () => {
                         </div>
                     )}
                 </main>
-            </div>
+            </div >
 
             <style>{`
                 .admin-label { display: block; margin-bottom: 0.5rem; color: var(--accent-cyan); font-weight: 500; font-size: 0.9rem; }
@@ -367,7 +475,7 @@ const Admin = () => {
                 .settings-icon-spin:hover { animation: spin 2s linear infinite; }
                 @keyframes spin { from {transform: rotate(0deg);} to {transform: rotate(360deg);} }
             `}</style>
-        </div>
+        </div >
     );
 };
 

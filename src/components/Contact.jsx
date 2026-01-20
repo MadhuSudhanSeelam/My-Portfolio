@@ -8,20 +8,10 @@ const Contact = () => {
     const [formData, setFormData] = useState({ name: '', email: '', message: '' });
     const [status, setStatus] = useState('idle'); // idle, sending, success, error, config_error
 
-    useEffect(() => {
-        if (EMAIL_ADDRESS === "your.email@example.com") {
-            console.warn("Contact form target email is still set to placeholder. Submissions will fail.");
-        }
-    }, [EMAIL_ADDRESS]);
+
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-
-        if (EMAIL_ADDRESS === "your.email@example.com") {
-            setStatus('config_error');
-            return;
-        }
-
         setStatus('sending');
 
         try {
