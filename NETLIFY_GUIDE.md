@@ -44,16 +44,27 @@ Because static sites (like Netlify pages) are **"Read-Only"**, the Admin Panel c
 
 ---
 
-## 3. Google Search (SEO)
-I have installed `react-helmet-async` and added `robots.txt` + `sitemap.xml` to your `public/` folder.
+## 3. Google Search (SEO) - Step-by-Step
+I have already uploaded the necessary files (`googlee...html`, `robots.txt`, `sitemap.xml`) to your site. Now follow these exact steps:
 
-**To get on Google faster:**
-1.  **Deploy your site** to Netlify (as shown in Step 1).
-2.  Go to [Google Search Console](https://search.google.com/search-console).
-3.  **Add Property**: Enter your Netlify URL (e.g., `https://madhu-portfolio.netlify.app`).
-4.  **Submit Sitemap**:
-    - Go to "Sitemaps" in the sidebar.
-    - Enter `sitemap.xml` and click **Submit**.
-5.  **Wait**: Google takes a few days to a week to index new sites. Be patient!
+### A. Verify Ownership
+1.  Go to [Google Search Console](https://search.google.com/search-console).
+2.  **Add Property**:
+    - Click the dropdown on the top left -> "Add property".
+    - Choose **URL prefix** (the right side box).
+    - Enter: `https://seelammadhusudhan.netlify.app/`
+    - Click **Continue**.
+3.  **Verification Method**:
+    - A pop-up will appear ("Verify ownership").
+    - Scroll down to **"HTML file"**.
+    - Click on it to expand.
+    - **Do NOT download** the file (I already put it on your site!).
+    - Just click the **VERIFY** button.
+    - It should show a green "Ownership verified" checkmark. ✅
 
-**Important Note**: In `public/sitemap.xml` and `public/robots.txt`, verify that the URL is your *actual* Netlify link. If it says `your-site-name`, update it to your real URL!
+### B. Submit Sitemap
+1.  On the left, under "Indexing", click **Sitemaps**.
+2.  You will see "Add a new sitemap".
+3.  In the box, type: `sitemap.xml`
+4.  Click **Submit**.
+5.  It should say "Success". If it says "Couldn't fetch", wait 24 hours and try again (Google is slow!).
