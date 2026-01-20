@@ -25,13 +25,41 @@ const Projects = () => {
                             viewport={{ once: true }}
                             transition={{ delay: index * 0.1 }}
                             className="project-card"
+                            style={{ cursor: project.demo && project.demo !== '#' ? 'pointer' : 'default' }}
+                            onClick={() => {
+                                if (project.demo && project.demo !== '#') {
+                                    window.open(project.demo, '_blank', 'noopener,noreferrer');
+                                }
+                            }}
                         >
-                            <div className="project-img-placeholder">
-                                <img src={project.image} alt={project.title} />
+                            <div className="project-img-placeholder" style={{ overflow: 'hidden', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+                                <img
+                                    src={project.image}
+                                    alt={project.title}
+                                    style={{
+                                        width: project.imageWidth || '100%',
+                                        height: project.imageHeight || 'auto',
+                                        objectFit: 'cover'
+                                    }}
+                                />
                                 <div className="project-overlay">
                                     <div className="overlay-links">
-                                        <a href={project.demo} target="_blank" rel="noreferrer"><ExternalLink size={20} /> Demo</a>
-                                        <a href={project.code} target="_blank" rel="noreferrer"><Github size={20} /> Code</a>
+                                        <a
+                                            href={project.demo}
+                                            target="_blank"
+                                            rel="noreferrer"
+                                            onClick={(e) => e.stopPropagation()}
+                                        >
+                                            <ExternalLink size={20} /> Demo
+                                        </a>
+                                        <a
+                                            href={project.code}
+                                            target="_blank"
+                                            rel="noreferrer"
+                                            onClick={(e) => e.stopPropagation()}
+                                        >
+                                            <Github size={20} /> Code
+                                        </a>
                                     </div>
                                 </div>
                             </div>

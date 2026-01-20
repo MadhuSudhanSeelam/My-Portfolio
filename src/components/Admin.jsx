@@ -2,12 +2,14 @@ import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Save, Settings, Info, Code as CodeIcon, Laptop, Briefcase, User, Plus, Trash2, CheckCircle, ExternalLink, AlertCircle } from 'lucide-react';
 import { portfolioConfig } from '../data/config';
+import ImageCropper from './ImageCropper';
 
 const Admin = () => {
     const [config, setConfig] = useState(portfolioConfig);
     const [activeTab, setActiveTab] = useState('profile');
     const [showCode, setShowCode] = useState(false);
     const [notification, setNotification] = useState(null);
+    const [cropperConfig, setCropperConfig] = useState({ show: false, image: null, callback: null, aspect: 1 });
 
     const showNotify = (msg) => {
         setNotification(msg);
@@ -22,6 +24,26 @@ const Admin = () => {
                 ? { ...prev[section], [field]: value }
                 : value
         }));
+    };
+
+    const handleFileSelect = (e, callback, aspect = 1) => {
+        const file = e.target.files[0];
+        if (file) {
+            if (file.size > 2000000) {
+                showNotify("File too large (Max 2MB)");
+                return;
+            }
+            const reader = new FileReader();
+            reader.onload = () => {
+                setCropperConfig({
+                    show: true,
+                    image: reader.result,
+                    callback: callback,
+                    aspect: aspect
+                });
+            };
+            reader.readAsDataURL(file);
+        }
     };
 
     // List Management (Profile Roles, About Bio & Stats)
@@ -107,6 +129,8 @@ const Admin = () => {
             title: "New Project",
             desc: "Description here...",
             image: "https://images.unsplash.com/photo-1555066931-4365d14bab8c",
+            imageWidth: "100%",
+            imageHeight: "auto",
             demo: "#",
             code: "#",
             tags: ["React", "CSS"]
@@ -325,17 +349,10 @@ const Admin = () => {
                                                         <input
                                                             type="file"
                                                             accept="image/*"
-                                                            onChange={(e) => {
-                                                                const file = e.target.files[0];
-                                                                if (file) {
-                                                                    const reader = new FileReader();
-                                                                    reader.onloadend = () => {
-                                                                        handleUpdate('profile', 'profileImage', reader.result);
-                                                                        showNotify("Image uploaded successfully!");
-                                                                    };
-                                                                    reader.readAsDataURL(file);
-                                                                }
-                                                            }}
+                                                            onChange={(e) => handleFileSelect(e, (cropped) => {
+                                                                handleUpdate('profile', 'profileImage', cropped);
+                                                                showNotify("Profile photo updated!");
+                                                            }, 1)}
                                                             style={{ position: 'absolute', left: 0, top: 0, opacity: 0, width: '100%', height: '100%', cursor: 'pointer' }}
                                                         />
                                                     </div>
@@ -512,12 +529,30 @@ const Admin = () => {
                                                     <button onClick={() => removeProject(i)} className="admin-delete-btn" style={{ height: '40px' }}><Trash2 size={18} /></button>
                                                 </div>
                                                 <textarea className="admin-input" rows="2" style={{ marginBottom: '1rem' }} value={proj.desc} onChange={(e) => updateProject(i, 'desc', e.target.value)} />
-                                                <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem', marginBottom: '1rem' }}>
-                                                    <input className="admin-input" placeholder="Image URL" value={proj.image} onChange={(e) => updateProject(i, 'image', e.target.value)} />
-                                                    <input className="admin-input" placeholder="Tags (comma separated)" value={proj.tags.join(', ')} onChange={(e) => updateProject(i, 'tags', e.target.value)} />
+                                                <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: '1rem', marginBottom: '1rem' }}>
+                                                    <div style={{ position: 'relative' }}>
+                                                        <input className="admin-input" placeholder="Image URL" value={proj.image} onChange={(e) => updateProject(i, 'image', e.target.value)} />
+                                                        <div style={{ position: 'absolute', right: '5px', top: '50%', transform: 'translateY(-50%)', display: 'flex' }}>
+                                                            <button className="admin-action-btn" style={{ padding: '4px 8px', fontSize: '0.7rem' }}>Upload</button>
+                                                            <input
+                                                                type="file"
+                                                                accept="image/*"
+                                                                style={{ position: 'absolute', inset: 0, opacity: 0, cursor: 'pointer' }}
+                                                                onChange={(e) => handleFileSelect(e, (cropped) => {
+                                                                    updateProject(i, 'image', cropped);
+                                                                    showNotify("Project image updated!");
+                                                                }, 16 / 9)}
+                                                            />
+                                                        </div>
+                                                    </div>
+                                                    <input className="admin-input" placeholder="Img Width (e.g. 100% or 300px)" value={proj.imageWidth || '100%'} onChange={(e) => updateProject(i, 'imageWidth', e.target.value)} />
+                                                    <input className="admin-input" placeholder="Img Height (e.g. auto or 200px)" value={proj.imageHeight || 'auto'} onChange={(e) => updateProject(i, 'imageHeight', e.target.value)} />
                                                 </div>
-                                                <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem' }}>
+                                                <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem', marginBottom: '1rem' }}>
+                                                    <input className="admin-input" placeholder="Tags (comma separated)" value={proj.tags.join(', ')} onChange={(e) => updateProject(i, 'tags', e.target.value)} />
                                                     <input className="admin-input" placeholder="Demo URL" value={proj.demo} onChange={(e) => updateProject(i, 'demo', e.target.value)} />
+                                                </div>
+                                                <div style={{ display: 'grid', gridTemplateColumns: '1fr', gap: '1rem' }}>
                                                     <input className="admin-input" placeholder="Code URL" value={proj.code} onChange={(e) => updateProject(i, 'code', e.target.value)} />
                                                 </div>
                                             </div>
@@ -529,6 +564,18 @@ const Admin = () => {
                     )}
                 </main>
             </div >
+
+            {cropperConfig.show && (
+                <ImageCropper
+                    image={cropperConfig.image}
+                    aspectRatio={cropperConfig.aspect}
+                    onCropComplete={(croppedImage) => {
+                        cropperConfig.callback(croppedImage);
+                        setCropperConfig({ ...cropperConfig, show: false });
+                    }}
+                    onCancel={() => setCropperConfig({ ...cropperConfig, show: false })}
+                />
+            )}
 
             <style>{`
                 .admin-label { display: block; margin-bottom: 0.5rem; color: var(--accent-cyan); font-weight: 500; font-size: 0.9rem; }

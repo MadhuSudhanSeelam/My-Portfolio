@@ -4,8 +4,8 @@ import { Mail, Github, Linkedin, Phone, Send, MessageCircle, CheckCircle, AlertC
 import { portfolioConfig } from '../data/config';
 
 const Contact = () => {
-    const { email: EMAIL_ADDRESS, whatsapp: WHATSAPP_NUMBER, github: GITHUB_URL, linkedin: LINKEDIN_URL } = portfolioConfig.profile;
-    const [formData, setFormData] = useState({ name: '', email: '', message: '' });
+    const { email: EMAIL_ADDRESS, whatsapp: WHATSAPP_NUMBER, github: GITHUB_URL, linkedin: LINKEDIN_URL, googleSheetScriptUrl: SCRIPT_URL } = portfolioConfig.profile;
+    const [formData, setFormData] = useState({ firstName: '', lastName: '', email: '', message: '' });
     const [status, setStatus] = useState('idle'); // idle, sending, success, error, config_error
 
 
@@ -15,32 +15,38 @@ const Contact = () => {
         setStatus('sending');
 
         try {
-            const response = await fetch(`https://formsubmit.co/ajax/${EMAIL_ADDRESS}`, {
+            // Use Script URL if available, otherwise fallback to FormSubmit
+            const endpoint = SCRIPT_URL || `https://formsubmit.co/ajax/${EMAIL_ADDRESS}`;
+
+            // If using Google Script, we use a different structure or just FormData
+            const response = await fetch(endpoint, {
                 method: "POST",
-                headers: {
+                body: SCRIPT_URL ? JSON.stringify(formData) : JSON.stringify({
+                    ...formData,
+                    name: `${formData.firstName} ${formData.lastName}`.trim(),
+                    _subject: `New Portfolio Message from ${formData.firstName} ${formData.lastName}`
+                }),
+                headers: SCRIPT_URL ? {
+                    "Content-Type": "text/plain;charset=utf-8",
+                } : {
                     "Content-Type": "application/json",
                     "Accept": "application/json"
-                },
-                body: JSON.stringify({
-                    name: formData.name,
-                    email: formData.email,
-                    message: formData.message,
-                    _subject: `New Portfolio Message from ${formData.name}`
-                })
+                }
             });
 
             const result = await response.json();
+            console.log("Submission Result:", result);
 
-            if (response.ok && result.success === "true") {
+            if (response.ok && (result.success === "true" || result.success === true)) {
                 setStatus('success');
-                setFormData({ name: '', email: '', message: '' });
+                setFormData({ firstName: '', lastName: '', email: '', message: '' });
                 setTimeout(() => setStatus('idle'), 5000);
             } else {
-                console.error("FormSubmit Error:", result);
+                console.error("Submission Error Details:", result);
                 setStatus('error');
             }
         } catch (error) {
-            console.error("Form submission error:", error);
+            console.error("Form submission catch error:", error);
             setStatus('error');
         }
     };
@@ -120,12 +126,22 @@ const Contact = () => {
                                 <div className="form-row">
                                     <input
                                         type="text"
-                                        name="name"
-                                        placeholder="Name"
-                                        value={formData.name}
+                                        name="firstName"
+                                        placeholder="First Name"
+                                        value={formData.firstName}
                                         onChange={handleChange}
                                         required
                                     />
+                                    <input
+                                        type="text"
+                                        name="lastName"
+                                        placeholder="Last Name"
+                                        value={formData.lastName}
+                                        onChange={handleChange}
+                                        required
+                                    />
+                                </div>
+                                <div className="form-row">
                                     <input
                                         type="email"
                                         name="email"
