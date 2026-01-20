@@ -12,6 +12,7 @@ Since your portfolio is built with **React & Vite** and hosted as a **Static Sit
 3.  **Configure Build Settings**:
     - **Build Command**: `npm run build`
     - **Publish Directory**: `dist`
+    - *Note*: I have added a `_redirects` file to your `public` folder. This is crucial for React routing to work. Do not delete it!
 4.  **Deploy**: Click "Deploy Site". Netlify will give you a live URL (e.g., `madhu-portfolio.netlify.app`).
 
 ---
