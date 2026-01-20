@@ -135,6 +135,71 @@ const Admin = () => {
         { id: 'projects', label: 'Projects', icon: <Briefcase size={18} /> }
     ];
 
+    const [isAuthenticated, setIsAuthenticated] = useState(false);
+    const [password, setPassword] = useState('');
+
+    const handleLogin = (e) => {
+        e.preventDefault();
+        if (password === 'MadhuReddy') {
+            setIsAuthenticated(true);
+            showNotify("Welcome back, Madhu!");
+        } else {
+            showNotify("Incorrect password");
+        }
+    };
+
+    if (!isAuthenticated) {
+        return (
+            <div className="admin-dashboard container section-padding" style={{ minHeight: '100vh', paddingTop: '150px', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+                <AnimatePresence>
+                    {notification && (
+                        <motion.div
+                            initial={{ opacity: 0, y: 50, x: '-50%' }}
+                            animate={{ opacity: 1, y: 0, x: '-50%' }}
+                            exit={{ opacity: 0, y: 20, x: '-50%' }}
+                            className="admin-notification"
+                            style={{
+                                position: 'fixed', bottom: '30px', left: '50%',
+                                background: notification === 'Incorrect password' ? '#ff4d4d' : 'var(--accent-blue)', color: 'white',
+                                padding: '1rem 2rem', borderRadius: '50px', zIndex: 2000,
+                                display: 'flex', alignItems: 'center', gap: '0.8rem',
+                                boxShadow: '0 10px 30px rgba(0,0,0,0.5)'
+                            }}
+                        >
+                            <Info size={20} /> {notification}
+                        </motion.div>
+                    )}
+                </AnimatePresence>
+
+                <motion.div
+                    initial={{ opacity: 0, scale: 0.9 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    style={{ background: 'var(--bg-card)', padding: '3rem', borderRadius: '24px', border: '1px solid var(--glass-border)', textAlign: 'center', maxWidth: '400px', width: '100%' }}
+                >
+                    <User size={48} color="var(--accent-blue)" style={{ marginBottom: '1.5rem' }} />
+                    <h2 style={{ marginBottom: '1.5rem' }}>Admin Access</h2>
+                    <form onSubmit={handleLogin}>
+                        <input
+                            type="password"
+                            placeholder="Enter Password"
+                            value={password}
+                            onChange={(e) => setPassword(e.target.value)}
+                            style={{
+                                width: '100%', padding: '1rem', background: 'rgba(255,255,255,0.05)',
+                                border: '1px solid var(--glass-border)', borderRadius: '12px',
+                                color: '#fff', marginBottom: '1.5rem', outline: 'none'
+                            }}
+                            autoFocus
+                        />
+                        <button type="submit" className="btn primary-btn" style={{ width: '100%', justifyContent: 'center' }}>
+                            Login
+                        </button>
+                    </form>
+                </motion.div>
+            </div>
+        );
+    }
+
     return (
         <div className="admin-dashboard container section-padding" style={{ minHeight: '100vh', paddingTop: '100px', paddingBottom: '100px' }}>
             {/* Notification */}
