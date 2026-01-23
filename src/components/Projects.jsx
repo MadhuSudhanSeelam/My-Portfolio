@@ -32,7 +32,7 @@ const Projects = () => {
                                 }
                             }}
                         >
-                            <div className="project-img-placeholder" style={{ overflow: 'hidden', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+                            <div className="project-img-placeholder" style={{ position: 'relative', overflow: 'hidden' }}>
                                 <img
                                     src={project.image}
                                     alt={project.title}

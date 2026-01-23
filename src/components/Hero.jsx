@@ -182,7 +182,7 @@ const Hero = () => {
                     box-shadow: 0 5px 15px rgba(58, 134, 255, 0.2);
                 }
                 
-                @media (max-width: 968px) {
+                @media (max-width: 992px) {
                     .hero-grid {
                         grid-template-columns: 1fr !important;
                         text-align: center;
@@ -201,7 +201,8 @@ const Hero = () => {
                         justify-content: center;
                     }
                     .main-title {
-                        font-size: 3rem !important;
+                        font-size: clamp(2rem, 5vw, 3rem) !important;
+                        white-space: nowrap;
                     }
                 }
             `}</style>
