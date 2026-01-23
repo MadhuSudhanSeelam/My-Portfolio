@@ -1,0 +1,111 @@
+.skills-section-balanced {
+    background: #000000;
+    padding: 100px 0;
+}
+
+.skills-title-white {
+    text-align: center;
+    margin-bottom: 4rem !important;
+    font-size: clamp(2.5rem, 5vw, 3rem) !important;
+    font-weight: 700 !important;
+    color: white !important;
+}
+
+.skills-row-balanced {
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.skill-card-balanced {
+    background: rgba(20, 20, 24, 0.6);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 16px;
+    padding: 2.5rem 1.5rem;
+    text-align: center;
+    transition: all 0.3s ease;
+    height: 100%;
+    min-height: 280px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+}
+
+.skill-card-balanced:hover {
+    border-color: var(--accent-color);
+    transform: translateY(-8px);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+}
+
+.card-icon-wrapper-balanced {
+    margin-bottom: 1.5rem;
+}
+
+.icon-circle-balanced {
+    width: 60px;
+    height: 60px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 50%;
+    font-size: 24px;
+    color: var(--accent-color);
+    margin: 0 auto;
+}
+
+.card-title-balanced {
+    color: white !important;
+    margin-bottom: 1.5rem !important;
+    font-size: 1.25rem !important;
+    font-weight: 600 !important;
+}
+
+.skill-badges-balanced {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    width: 100%;
+}
+
+.skill-badge-balanced {
+    background: rgba(255, 255, 255, 0.08) !important;
+    border: 1px solid rgba(255, 255, 255, 0.15) !important;
+    color: rgba(255, 255, 255, 0.85) !important;
+    padding: 6px 14px !important;
+    border-radius: 8px !important;
+    font-size: 0.9rem !important;
+    display: inline-block;
+    cursor: default;
+    backdrop-filter: blur(5px);
+    transition: all 0.3s ease;
+}
+
+.skill-badge-balanced:hover {
+    background: var(--accent-color) !important;
+    color: white !important;
+    border-color: var(--accent-color) !important;
+}
+
+@media (max-width: 768px) {
+    .skills-section-balanced {
+        padding: 60px 0;
+    }
+
+    .skill-card-balanced {
+        min-height: auto;
+        padding: 2rem 1.5rem;
+    }
+
+    .skills-row-balanced .ant-col {
+        margin-bottom: 1.5rem;
+    }
+}
+
+/* Ensure equal heights on desktop */
+@media (min-width: 769px) {
+    .skills-row-balanced {
+        display: flex;
+        align-items: stretch;
+    }
+}

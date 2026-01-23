@@ -1,63 +1,71 @@
 import { motion } from 'framer-motion';
-import { Download } from 'lucide-react';
+import { Row, Col, Typography } from 'antd';
 import { portfolioConfig } from '../data/config';
+import './About.css';
+
+const { Title, Paragraph, Text } = Typography;
 
 const About = () => {
     const { bio, stats } = portfolioConfig.about;
-    const { resumeUrl } = portfolioConfig.profile;
+
+    const containerVariants = {
+        hidden: { opacity: 0, y: 30 },
+        visible: {
+            opacity: 1,
+            y: 0,
+            transition: { duration: 0.8, ease: "easeOut", staggerChildren: 0.15 }
+        }
+    };
+
+    const itemVariants = {
+        hidden: { opacity: 0, y: 20 },
+        visible: {
+            opacity: 1,
+            y: 0,
+            transition: { duration: 0.6 }
+        }
+    };
 
     return (
-        <section id="about" className="about-section section-padding">
+        <section id="about" className="about-section-minimal section-padding">
             <div className="container">
-                <motion.h2
+                <motion.div
                     initial={{ opacity: 0, y: 20 }}
                     whileInView={{ opacity: 1, y: 0 }}
                     viewport={{ once: true }}
-                    className="section-title"
+                    transition={{ duration: 0.6 }}
                 >
-                    About Me
-                </motion.h2>
-                <div className="about-grid">
-                    <motion.div
-                        initial={{ opacity: 0, x: -30 }}
-                        whileInView={{ opacity: 1, x: 0 }}
-                        viewport={{ once: true }}
-                        transition={{ delay: 0.2 }}
-                        className="about-text"
-                    >
-                        {bio.map((paragraph, index) => (
-                            <p key={index}>{paragraph}</p>
-                        ))}
-                        <div className="personal-info">
-                            {stats.map((stat, index) => (
-                                <div className="info-item" key={index}>
-                                    <span className="label">{stat.label}:</span>
-                                    <span className="value">{stat.value}</span>
-                                </div>
+                    <Title level={2} className="about-title-gradient">About Me</Title>
+                </motion.div>
+
+                <Row justify="center">
+                    <Col xs={24} md={20} lg={18}>
+                        <motion.div
+                            variants={containerVariants}
+                            initial="hidden"
+                            whileInView="visible"
+                            viewport={{ once: true, margin: "-100px" }}
+                            className="about-content-minimal"
+                        >
+                            {bio.map((paragraph, index) => (
+                                <motion.div key={index} variants={itemVariants}>
+                                    <Paragraph className="about-paragraph-minimal">
+                                        {paragraph}
+                                    </Paragraph>
+                                </motion.div>
                             ))}
-                        </div>
-                        {resumeUrl && resumeUrl !== '#' && (
-                            <motion.div
-                                initial={{ opacity: 0, y: 10 }}
-                                whileInView={{ opacity: 1, y: 0 }}
-                                viewport={{ once: true }}
-                                transition={{ delay: 0.4 }}
-                                style={{ marginTop: '2rem' }}
-                            >
-                                <a
-                                    href={resumeUrl}
-                                    target="_blank"
-                                    rel="noopener noreferrer"
-                                    className="btn primary-btn"
-                                    style={{ display: 'inline-flex', alignItems: 'center', gap: '0.5rem' }}
-                                >
-                                    <Download size={18} />
-                                    Download Resume
-                                </a>
+
+                            <motion.div variants={itemVariants} className="stats-row-minimal">
+                                {stats.map((stat, index) => (
+                                    <div key={index} className="stat-inline-minimal">
+                                        <Text className="stat-label-colored">{stat.label}:</Text>
+                                        <Text className="stat-value-white">{stat.value}</Text>
+                                    </div>
+                                ))}
                             </motion.div>
-                        )}
-                    </motion.div>
-                </div>
+                        </motion.div>
+                    </Col>
+                </Row>
             </div>
         </section>
     );

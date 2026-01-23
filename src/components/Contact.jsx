@@ -1,30 +1,45 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { motion } from 'framer-motion';
-import { Mail, Github, Linkedin, Phone, Send, MessageCircle, CheckCircle, AlertCircle } from 'lucide-react';
+import {
+    MailOutlined,
+    GithubOutlined,
+    LinkedinOutlined,
+    PhoneOutlined,
+    SendOutlined,
+    WhatsAppOutlined,
+    CheckCircleFilled,
+    ExclamationCircleFilled
+} from '@ant-design/icons';
+import { Row, Col, Typography, Form, Input, Button, Space, Tooltip, message } from 'antd';
 import { portfolioConfig } from '../data/config';
+import './Contact.css';
+
+const { Title, Paragraph, Text } = Typography;
+const { TextArea } = Input;
 
 const Contact = () => {
-    const { email: EMAIL_ADDRESS, whatsapp: WHATSAPP_NUMBER, github: GITHUB_URL, linkedin: LINKEDIN_URL, googleSheetScriptUrl: SCRIPT_URL } = portfolioConfig.profile;
-    const [formData, setFormData] = useState({ firstName: '', lastName: '', email: '', message: '' });
-    const [status, setStatus] = useState('idle'); // idle, sending, success, error, config_error
+    const {
+        email: EMAIL_ADDRESS,
+        whatsapp: WHATSAPP_NUMBER,
+        github: GITHUB_URL,
+        linkedin: LINKEDIN_URL,
+        googleSheetScriptUrl: SCRIPT_URL
+    } = portfolioConfig.profile;
 
+    const [status, setStatus] = useState('idle'); // idle, sending, success, error
+    const [form] = Form.useForm();
 
-
-    const handleSubmit = async (e) => {
-        e.preventDefault();
+    const onFinish = async (values) => {
         setStatus('sending');
 
         try {
-            // Use Script URL if available, otherwise fallback to FormSubmit
             const endpoint = SCRIPT_URL || `https://formsubmit.co/ajax/${EMAIL_ADDRESS}`;
 
-            // If using Google Script, we use a different structure or just FormData
             const response = await fetch(endpoint, {
                 method: "POST",
-                body: SCRIPT_URL ? JSON.stringify(formData) : JSON.stringify({
-                    ...formData,
-                    name: `${formData.firstName} ${formData.lastName}`.trim(),
-                    _subject: `New Portfolio Message from ${formData.firstName} ${formData.lastName}`
+                body: SCRIPT_URL ? JSON.stringify(values) : JSON.stringify({
+                    ...values,
+                    _subject: `New Portfolio Message from ${values.firstName} ${values.lastName}`
                 }),
                 headers: SCRIPT_URL ? {
                     "Content-Type": "text/plain;charset=utf-8",
@@ -35,164 +50,153 @@ const Contact = () => {
             });
 
             const result = await response.json();
-            console.log("Submission Result:", result);
 
             if (response.ok && (result.success === "true" || result.success === true)) {
                 setStatus('success');
-                setFormData({ firstName: '', lastName: '', email: '', message: '' });
-                setTimeout(() => setStatus('idle'), 5000);
+                message.success('Message sent successfully!');
+                form.resetFields();
             } else {
-                console.error("Submission Error Details:", result);
                 setStatus('error');
+                message.error('Failed to send message. Please try again.');
             }
         } catch (error) {
-            console.error("Form submission catch error:", error);
+            console.error("Form submission error:", error);
             setStatus('error');
+            message.error('An error occurred. Please try again.');
         }
     };
 
-    const handleChange = (e) => {
-        const { name, value } = e.target;
-        setFormData(prev => ({ ...prev, [name]: value }));
-    };
-
     const contactLinks = [
-        { icon: <Mail />, href: `mailto:${EMAIL_ADDRESS}`, label: "Email", color: "var(--accent-blue)" },
-        { icon: <MessageCircle />, href: `https://wa.me/${WHATSAPP_NUMBER}`, label: "WhatsApp", color: "#25D366" },
-        { icon: <Phone />, href: `tel:+${WHATSAPP_NUMBER}`, label: "Call", color: "var(--accent-cyan)" },
-        { icon: <Github />, href: GITHUB_URL, label: "GitHub", color: "#fff" },
-        { icon: <Linkedin />, href: LINKEDIN_URL, label: "LinkedIn", color: "#0077b5" }
+        { icon: <MailOutlined />, href: `mailto:${EMAIL_ADDRESS}`, label: "Email", color: "#3a86ff" },
+        { icon: <WhatsAppOutlined />, href: `https://wa.me/${WHATSAPP_NUMBER}`, label: "WhatsApp", color: "#25D366" },
+        { icon: <PhoneOutlined />, href: `tel:+${WHATSAPP_NUMBER}`, label: "Call", color: "#00f5d4" },
+        { icon: <GithubOutlined />, href: GITHUB_URL, label: "GitHub", color: "#ffffff" },
+        { icon: <LinkedinOutlined />, href: LINKEDIN_URL, label: "LinkedIn", color: "#0077b5" }
     ];
 
     return (
-        <section id="contact" className="contact-section section-padding">
+        <section id="contact" className="contact-section-antd section-padding">
             <div className="container">
-                <motion.div
-                    initial={{ opacity: 0, y: 20 }}
-                    whileInView={{ opacity: 1, y: 0 }}
-                    viewport={{ once: true }}
-                    className="contact-header"
-                >
-                    <h2 className="section-title">Get In Touch</h2>
-                    <p className="section-subtitle">Have a project in mind or just want to say hi? Feel free to reach out!</p>
-                </motion.div>
+                <Row justify="center">
+                    <Col xs={24} md={18} lg={12}>
+                        <motion.div
+                            initial={{ opacity: 0, y: 20 }}
+                            whileInView={{ opacity: 1, y: 0 }}
+                            viewport={{ once: true }}
+                            style={{ textAlign: 'center', marginBottom: '4rem' }}
+                        >
+                            <Title level={2} className="contact-title-white">Get In Touch</Title>
+                            <Paragraph className="section-subtitle-antd">
+                                Have a project in mind or just want to say hi? Feel free to reach out!
+                            </Paragraph>
+                        </motion.div>
 
-                <div className="contact-container-minimal">
-                    <motion.div
-                        initial={{ opacity: 0, y: 30 }}
-                        whileInView={{ opacity: 1, y: 0 }}
-                        viewport={{ once: true }}
-                        className="contact-icons-row"
-                    >
-                        {contactLinks.map((link, index) => (
-                            <motion.a
-                                key={link.label}
-                                href={link.href}
-                                target={link.href.startsWith('http') ? "_blank" : "_self"}
-                                rel="noreferrer"
-                                className="contact-icon-btn"
-                                whileHover={{ scale: 1.1, translateY: -5 }}
-                                whileTap={{ scale: 0.95 }}
-                                style={{ '--hover-color': link.color }}
-                                initial={{ opacity: 0, y: 20 }}
-                                animate={{ opacity: 1, y: 0 }}
-                                transition={{ delay: index * 0.1 }}
-                            >
-                                {link.icon}
-                                <span className="tooltip">{link.label}</span>
-                            </motion.a>
-                        ))}
-                    </motion.div>
+                        <motion.div
+                            initial={{ opacity: 0, y: 30 }}
+                            whileInView={{ opacity: 1, y: 0 }}
+                            viewport={{ once: true }}
+                            className="contact-links-wrapper-antd"
+                        >
+                            <Space size={[16, 16]} wrap justify="center" style={{ width: '100%', justifyContent: 'center', marginBottom: '3rem' }}>
+                                {contactLinks.map((link) => (
+                                    <Tooltip title={link.label} key={link.label}>
+                                        <Button
+                                            shape="circle"
+                                            icon={link.icon}
+                                            size="large"
+                                            href={link.href}
+                                            target="_blank"
+                                            className="contact-icon-btn-antd"
+                                            style={{ '--hover-color': link.color }}
+                                        />
+                                    </Tooltip>
+                                ))}
+                            </Space>
+                        </motion.div>
 
-                    <motion.div
-                        initial={{ opacity: 0, scale: 0.95 }}
-                        whileInView={{ opacity: 1, scale: 1 }}
-                        viewport={{ once: true }}
-                        className="contact-form-minimal"
-                    >
-                        {status === 'success' ? (
-                            <motion.div
-                                initial={{ opacity: 0, y: 10 }}
-                                animate={{ opacity: 1, y: 0 }}
-                                className="success-message"
-                            >
-                                <CheckCircle size={48} color="#25D366" />
-                                <h3>Thank you!</h3>
-                                <p>Your message has been sent successfully. I'll get back to you soon.</p>
-                                <button onClick={() => setStatus('idle')} className="btn secondary-btn" style={{ marginTop: '1rem' }}>Send another</button>
-                            </motion.div>
-                        ) : (
-                            <form className="minimal-form" onSubmit={handleSubmit}>
-                                <div className="form-row">
-                                    <input
-                                        type="text"
-                                        name="firstName"
-                                        placeholder="First Name"
-                                        value={formData.firstName}
-                                        onChange={handleChange}
-                                        required
-                                    />
-                                    <input
-                                        type="text"
-                                        name="lastName"
-                                        placeholder="Last Name"
-                                        value={formData.lastName}
-                                        onChange={handleChange}
-                                        required
-                                    />
+                        <motion.div
+                            initial={{ opacity: 0, scale: 0.95 }}
+                            whileInView={{ opacity: 1, scale: 1 }}
+                            viewport={{ once: true }}
+                            className="contact-form-card-antd"
+                        >
+                            {status === 'success' ? (
+                                <div className="success-state-antd">
+                                    <CheckCircleFilled style={{ fontSize: '48px', color: '#25D366', marginBottom: '1.5rem' }} />
+                                    <Title level={3} style={{ color: 'white' }}>Thank you!</Title>
+                                    <Paragraph style={{ color: 'rgba(255,255,255,0.6)' }}>
+                                        Your message has been sent successfully. I'll get back to you soon.
+                                    </Paragraph>
+                                    <Button type="primary" shape="round" onClick={() => setStatus('idle')}>
+                                        Send Another
+                                    </Button>
                                 </div>
-                                <div className="form-row">
-                                    <input
-                                        type="email"
+                            ) : (
+                                <Form
+                                    form={form}
+                                    layout="vertical"
+                                    onFinish={onFinish}
+                                    className="antd-form-custom"
+                                >
+                                    <Row gutter={16}>
+                                        <Col xs={24} sm={12}>
+                                            <Form.Item
+                                                name="firstName"
+                                                rules={[{ required: true, message: 'Please enter your first name' }]}
+                                            >
+                                                <Input placeholder="First Name" size="large" />
+                                            </Form.Item>
+                                        </Col>
+                                        <Col xs={24} sm={12}>
+                                            <Form.Item
+                                                name="lastName"
+                                                rules={[{ required: true, message: 'Please enter your last name' }]}
+                                            >
+                                                <Input placeholder="Last Name" size="large" />
+                                            </Form.Item>
+                                        </Col>
+                                    </Row>
+                                    <Form.Item
                                         name="email"
-                                        placeholder="Email"
-                                        value={formData.email}
-                                        onChange={handleChange}
-                                        required
-                                    />
-                                </div>
-                                <textarea
-                                    name="message"
-                                    placeholder="Write your message here..."
-                                    rows="4"
-                                    value={formData.message}
-                                    onChange={handleChange}
-                                    required
-                                ></textarea>
-
-                                <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
-                                    <button
-                                        type="submit"
-                                        className={`btn primary-btn submit-btn-minimal ${status}`}
-                                        disabled={status === 'sending'}
+                                        rules={[
+                                            { required: true, message: 'Please enter your email' },
+                                            { type: 'email', message: 'Please enter a valid email' }
+                                        ]}
                                     >
-                                        {status === 'idle' && <><Send size={18} style={{ marginRight: '8px' }} /> Send Message</>}
-                                        {status === 'sending' && "Sending..."}
-                                        {status === 'error' && "Error! Try again"}
-                                        {status === 'config_error' && "Setup Required"}
-                                    </button>
+                                        <Input placeholder="Email Address" size="large" />
+                                    </Form.Item>
+                                    <Form.Item
+                                        name="message"
+                                        rules={[{ required: true, message: 'Please enter your message' }]}
+                                    >
+                                        <TextArea placeholder="Your Message" rows={4} size="large" />
+                                    </Form.Item>
 
-                                    {status === 'config_error' && (
-                                        <motion.div
-                                            initial={{ opacity: 0, height: 0 }}
-                                            animate={{ opacity: 1, height: 'auto' }}
-                                            className="config-error-notice"
+                                    <Form.Item>
+                                        <Button
+                                            type="primary"
+                                            htmlType="submit"
+                                            icon={<SendOutlined />}
+                                            loading={status === 'sending'}
+                                            block
+                                            size="large"
+                                            shape="round"
+                                            className="contact-submit-btn-antd"
                                         >
-                                            <AlertCircle size={16} />
-                                            <span>Developer: Please update the <code>EMAIL_ADDRESS</code> in <code>config.js</code> to enable form delivery.</span>
-                                        </motion.div>
-                                    )}
+                                            {status === 'sending' ? 'Sending...' : 'Send Message'}
+                                        </Button>
+                                    </Form.Item>
 
                                     {status === 'error' && (
-                                        <p style={{ color: '#ff4d4d', fontSize: '0.9rem', textAlign: 'center' }}>
-                                            Something went wrong. Please check your internet or try again later.
-                                        </p>
+                                        <Text type="danger" style={{ display: 'block', textAlign: 'center' }}>
+                                            <ExclamationCircleFilled /> Something went wrong. Please try again.
+                                        </Text>
                                     )}
-                                </div>
-                            </form>
-                        )}
-                    </motion.div>
-                </div>
+                                </Form>
+                            )}
+                        </motion.div>
+                    </Col>
+                </Row>
             </div>
         </section>
     );

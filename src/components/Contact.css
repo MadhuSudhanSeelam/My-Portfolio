@@ -1,0 +1,76 @@
+.contact-section-antd {
+    background: #0a0a0c;
+}
+
+.contact-title-white {
+    text-align: center;
+    margin-bottom: 1rem !important;
+    font-size: clamp(2.5rem, 5vw, 3rem) !important;
+    font-weight: 700 !important;
+    background: linear-gradient(135deg, #6366f1, #8b5cf6) !important;
+    -webkit-background-clip: text !important;
+    background-clip: text !important;
+    -webkit-text-fill-color: transparent !important;
+}
+
+.section-subtitle-antd {
+    color: rgba(255, 255, 255, 0.6) !important;
+    font-size: 1.1rem !important;
+    margin-top: 0.5rem !important;
+}
+
+.contact-icon-btn-antd {
+    background: rgba(20, 20, 24, 0.7) !important;
+    border: 1px solid rgba(255, 255, 255, 0.1) !important;
+    color: rgba(255, 255, 255, 0.6) !important;
+    transition: all 0.3s ease !important;
+}
+
+.contact-icon-btn-antd:hover {
+    color: rgb(0, 0, 0) !important;
+    border-color: var(--hover-color) !important;
+    background: var(--hover-color) !important;
+    box-shadow: 0 0 15px var(--hover-color);
+    transform: translateY(-3px);
+}
+
+.contact-form-card-antd {
+    background: rgba(20, 20, 24, 0.7);
+    padding: 3rem;
+    border-radius: 24px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
+}
+
+.antd-form-custom .ant-input,
+.antd-form-custom .ant-input-affix-wrapper,
+.antd-form-custom .ant-input-password {
+    background: rgba(255, 255, 255, 0.05) !important;
+    border: 1px solid rgba(255, 255, 255, 0.1) !important;
+    color: white !important;
+    border-radius: 12px !important;
+}
+
+.antd-form-custom .ant-input:focus,
+.antd-form-custom .ant-input-affix-wrapper-focused {
+    border-color: #3a86ff !important;
+    box-shadow: 0 0 0 2px rgba(58, 134, 255, 0.1) !important;
+}
+
+.contact-submit-btn-antd {
+    height: 50px !important;
+    font-size: 1.1rem !important;
+    font-weight: 600 !important;
+    margin-top: 1rem;
+}
+
+.success-state-antd {
+    text-align: center;
+    padding: 2rem 0;
+}
+
+@media (max-width: 576px) {
+    .contact-form-card-antd {
+        padding: 2rem;
+    }
+}
