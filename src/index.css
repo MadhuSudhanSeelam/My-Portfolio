@@ -594,6 +594,7 @@ footer p {
     .about-text p {
         font-size: 1rem;
         margin-bottom: 1.2rem;
+        text-align: center;
     }
 
     .personal-info {
@@ -608,6 +609,16 @@ footer p {
         max-width: 400px;
         margin: 0 auto;
         width: 100%;
+        text-align: center;
+        align-items: center;
+    }
+
+    .skill-badges-v2 {
+        justify-content: center;
+    }
+
+    .card-header {
+        justify-content: center;
     }
 
     .skills-grid {
