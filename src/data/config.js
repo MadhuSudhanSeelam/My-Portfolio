@@ -10,7 +10,8 @@ export const portfolioConfig = {
     ],
     "tagline": "Crafting digital experiences with code and creativity. I build scalable, modern, and user-centric applications.",
     "email": "smr662006@gmail.com",
-    "whatsapp": "919390444256",
+    "leetcode": "https://leetcode.com/u/SeelamMadhuSudhan/",
+    "hackerRank": "https://www.hackerrank.com/profile/smr662006",
     "github": "https://github.com/MadhuSudhanSeelam",
     "linkedin": "https://www.linkedin.com/in/seelam-madhusudhan",
     "googleSheetScriptUrl": "https://script.google.com/macros/s/AKfycbz3UmxJyV936lbaQ85vtTkpxySx-2xSDG_2kokWn_REDbc1mwlCDS9DNP8IB2huk9G5/exec"
