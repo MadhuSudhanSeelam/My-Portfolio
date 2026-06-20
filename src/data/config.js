@@ -38,13 +38,20 @@ export const portfolioConfig = {
   },
   "skillCategories": [
     {
+      "title": "Languages",
+      "color": "var(--accent-blue)",
+      "skills": [
+        "Java",
+        "Python",
+        "SQL"
+      ]
+    },
+    {
       "title": "Frontend",
       "color": "var(--accent-blue)",
       "skills": [
-        "HTML5",
-        "CSS3",
         "JavaScript",
-        "React"
+        "React.js"
       ]
     },
     {
@@ -52,57 +59,101 @@ export const portfolioConfig = {
       "color": "var(--accent-purple)",
       "skills": [
         "Node.js",
-        "Python",
+        "FastAPI",
+        "Express.js"
+      ]
+    },
+    {
+      "title": "Databases",
+      "color": "var(--accent-purple)",
+      "skills": [
         "MySQL",
-        "Express",
         "MongoDB"
       ]
     },
     {
-      "title": "Design & Tools",
+      "title": "Cloud & DevOps",
       "color": "var(--accent-cyan)",
       "skills": [
-        "Figma",
-        "UI/UX",
+        "AWS Cloud Foundations",
         "Git",
-        "Vite"
+        "GitHub"
+      ]
+    },
+    {
+      "title": "Developer Tools",
+      "color": "var(--accent-cyan)",
+      "skills": [
+        "VS Code",
+        "AntiGravity",
+        "Linux"
+      ]
+    }
+  ],
+  "experience": [
+    {
+      "company": "MEDIAMANGER4U",
+      "position": "AI Content Intern",
+      "duration": "Jan 2026 – Apr 2026",
+      "description": [
+        "Created AI-generated video content and research-based articles to support digital marketing campaigns.",
+        "Designed and managed social media content, increasing audience engagement through AI-assisted content creation."
+      ],
+      "tech": [
+        "AI Tools",
+        "Prompt Engineering",
+        "Content Research",
+        "Social Media Management"
       ]
     }
   ],
   "projects": [
     {
-      "title": "Smart Chatbot",
-      "desc": "An AI-powered chatbot using natural language processing. Built with React and OpenAI API.",
+      "title": "Weather Dashboard",
+      "desc": "Weather applications often lack an intuitive interface for viewing real-time conditions and hourly forecasts. Built a responsive dashboard with Open-Meteo APIs, and interactive weather visualization. Supports worldwide city search, displays 7+ weather metrics, and visualizes 24-hour forecasts with real-time data.",
+      "image": "https://images.unsplash.com/photo-1600298881974-6be191ceeda1?q=80&w=2070&auto=format&fit=crop",
+      "demo": "https://unq-weather.netlify.app/",
+      "code": "https://github.com/MadhuSudhanSeelam/weather",
+      "tags": [
+        "HTML",
+        "CSS",
+        "JavaScript"
+      ]
+    },
+    {
+      "title": "AI Chatbot",
+      "desc": "Built for small needs and deployable AI chatbot. Created a static frontend with Python and API integration. Provided a production-ready serverless deployment.",
       "image": "https://images.unsplash.com/photo-1555066931-4365d14bab8c?q=80&w=2070&auto=format&fit=crop",
-      "demo": "https://btechgpt.netlify.app/",
-      "code": "#",
+      "demo": "https://akatsuki-ai.netlify.app/",
+      "code": "https://github.com/MadhuSudhanSeelam/ai",
       "tags": [
-        "React",
-        "OpenAI",
-        "Tailwind"
+        "Python",
+        "Vibe Coding"
       ]
+    }
+  ],
+  "achievements": [
+    {
+      "title": "Solved 100+ DSA Problems",
+      "description": "Solved 100+ Data Structures and Algorithms problems on LeetCode."
     },
     {
-      "title": "Portfolio Site",
-      "desc": "A modern, responsive portfolio built with glassmorphism design and React.",
-      "image": "https://images.unsplash.com/photo-1551650975-87deedd944c3?q=80&w=1974&auto=format&fit=crop",
-      "demo": "https://www.google.com/",
-      "code": "",
-      "tags": [
-        "Sample"
-      ]
+      "title": "Pierce Hackathon 6.0",
+      "description": "Participated in Pierce Hackathon 6.0 at Parul University."
+    }
+  ],
+  "certifications": [
+    {
+      "title": "AWS Academy Graduate – Cloud Foundations",
+      "issuer": "AWS",
+      "date": "Mar 2026",
+      "url": "https://www.credly.com/badges/20374b7d-e423-4f16-8c51-7ceb74563c11/linked_in_profile"
     },
     {
-      "title": "E-Comm App",
-      "desc": "A full-featured shopping cart system with secure checkout and state management.",
-      "image": "https://images.unsplash.com/photo-1460925895917-afdab827c52f?q=80&w=2015&auto=format&fit=crop",
-      "demo": "https://www.flipkart.com/viewcart",
-      "code": "#",
-      "tags": [
-        "React",
-        "Redux",
-        "Firebase"
-      ]
+      "title": "AI Fluency",
+      "issuer": "Anthropic",
+      "date": "Mar 2026",
+      "url": "https://verify.skilljar.com/c/from7oup6vvw"
     }
   ]
 };

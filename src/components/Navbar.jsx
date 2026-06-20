@@ -19,7 +19,10 @@ const Navbar = () => {
         { key: 'hero', label: <a href="#hero">Home</a> },
         { key: 'about', label: <a href="#about">About</a> },
         { key: 'skills', label: <a href="#skills">Skills</a> },
+        { key: 'experience', label: <a href="#experience">Experience</a> },
         { key: 'projects', label: <a href="#projects">Projects</a> },
+        { key: 'achievements', label: <a href="#achievements">Achievements</a> },
+        { key: 'certifications', label: <a href="#certifications">Certifications</a> },
         { key: 'contact', label: <a href="#contact">Contact</a> },
     ];
 

@@ -68,7 +68,7 @@ const Contact = () => {
     };
 
     const contactLinks = [
-        { icon: <MailOutlined />, href: `mailto:${EMAIL_ADDRESS}`, label: "Email", color: "#3a86ff" },
+        { icon: <MailOutlined />, href: `mailto:${EMAIL_ADDRESS}`, label: "Email", color: "#743333ff" },
         {
             icon: (
                 <svg viewBox="0 0 24 24" fill="currentColor" style={{ width: '1em', height: '1em' }}>
